@@ -33,6 +33,16 @@ config:
                 issuer-uri: https://iam-escape.cloud.cnaf.infn.it/
               ska:
                 issuer-uri: https://ska-iam.stfc.ac.uk/
+            registration:
+              escape:
+                provider: escape
+                client-name: 
+                client-id: 
+                client-secret: 
+                scope:
+                  - openid
+                  - profile
+                  - wlcg.groups
   certificates:
     host:
       crt: |-
