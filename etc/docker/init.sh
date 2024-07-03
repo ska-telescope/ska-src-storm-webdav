@@ -2,6 +2,7 @@
 
 env
 
+# Start the StoRM service.
 /usr/bin/java \
 	${STORM_WEBDAV_JVM_OPTS} \
 	-Djava.io.tmpdir=/var/lib/storm-webdav/work \

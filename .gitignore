@@ -1,7 +1,16 @@
+# IDE
+.idea
+
 # sensitive StoRM configuration files
 
-etc/storm-webdav/sa.d/
-etc/storm-webdav/config/application.yml
+etc/storm-webdav/sa.d/*
+!etc/storm-webdav/sa.d
+!etc/storm-webdav/sa.d/README.md
+!etc/storm-webdav/sa.d/sa.properties.template
+
+etc/storm-webdav/config/*
+!etc/storm-webdav/config
+!etc/storm-webdav/config/application.yml.template
 
 # host-certificates
 

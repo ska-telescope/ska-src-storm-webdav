@@ -8,11 +8,14 @@ deployment:
 
 extraEnv:
   - name: STORM_WEBDAV_HOSTNAME_0
-    value: 
+    value:
   - name: STORM_WEBDAV_VOMS_TRUST_STORE_DIR
     value: /etc/grid-security/certificates
+  - name: STORM_WEBDAV_REQUIRE_CLIENT_CERT
+    value: "false"
 
 config:
+  # refer to https://github.com/italiangrid/storm-webdav/tree/master/etc/storm-webdav/config
   application: |- 
     oauth: 
       enable-oidc: true
@@ -28,33 +31,28 @@ config:
             provider:
               escape:
                 issuer-uri: https://iam-escape.cloud.cnaf.infn.it/
-            registration:
-              escape:
-                provider: escape
-                client-name: 
-                client-id: 
-                client-secret: 
-                scope:
-                  - openid
-                  - profile
-                  - wlcg.groups
+              ska:
+                issuer-uri: https://ska-iam.stfc.ac.uk/
   certificates:
     host:
       crt: |-
+        # host certificate
       key: |-
+        # host private key
 
+  # list of storage areas
   sa:
-    stfc.properties: |-
-      # This is the STFC STORM SToRM WebDAV storage area configuration
+    # refer to https://github.com/italiangrid/storm-webdav/tree/master/etc/storm-webdav/sa.d
+    sa.properties: |-
       # Name of the storage area
       name=sa
 
       # Root path for the storage area. Files will be served from this path, which must exist and
       # must be accessible from the user that runs the storm webdav service
-      rootPath=/path/to/data
+      rootPath=
 
       # Comma separated list of storage area access points.
-      accessPoints=/sa
+      accessPoints=
 
       # Comma-separated list of VOMS VOs supported in this storage area
       # vos=test.vo
@@ -90,7 +88,7 @@ config:
       #fineGrainedAuthzEnabled=true
 
 ingress:
-  host: 
+  host:
 
 persistence:
   storageClass: 

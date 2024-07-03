@@ -6,7 +6,7 @@ ENV LimitNOFILE=65535
 ENV STORM_WEBDAV_USER=storm
 ENV STORM_WEBDAV_JVM_OPTS="-Xms1024m -Xmx1024m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=1044,suspend=n"
 ENV STORM_WEBDAV_SERVER_ADDRESS=0.0.0.0
-ENV STORM_WEBDAV_HOSTNAME_0="srcdev.skatelescope.org"
+ENV STORM_WEBDAV_HOSTNAME_0=""
 ENV STORM_WEBDAV_HTTPS_PORT=8443
 ENV STORM_WEBDAV_HTTP_PORT=8085
 ENV STORM_WEBDAV_CERTIFICATE_PATH=/etc/grid-security/storm-webdav/hostcert.pem
@@ -29,6 +29,7 @@ ENV STORM_WEBDAV_VO_MAP_FILES_REFRESH_INTERVAL=21600
 ENV STORM_WEBDAV_TPC_MAX_CONNECTIONS=50
 ENV STORM_WEBDAV_TPC_VERIFY_CHECKSUM=false
 ENV STORM_WEBDAV_AUTHZ_SERVER_ENABLE=false
+ENV STORM_WEBDAV_REQUIRE_CLIENT_CERT=false
 
 # install egi repo (grid trust anchors) and dependencies
 RUN curl -Lo /etc/yum.repos.d/EGI-trustanchors.repo https://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustanchors.repo
