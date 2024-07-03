@@ -1,0 +1,79 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    io.kompose.service: storm-webdav
+  name: storm-webdav
+  namespace: {{ .Values.deployment.namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: storm-webdav
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        io.kompose.service: storm-webdav
+    spec:
+      initContainers:
+      - name: change-ownership-of-sa-to-storm-user
+        image: busybox
+        command: ["sh", "-c", "chown -R 1000:1000 /data"]
+        volumeMounts:
+        - name: storage-area
+          mountPath: /data
+      containers:
+      - image: {{ .Values.image.repository }}:{{ .Values.image.tag }}
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        name: ska-src-storm-webdav
+        ports:
+        - containerPort: 8443
+        - containerPort: 8085
+        resources: {}
+        volumeMounts:
+        - mountPath: "/data"
+          name: storage-area
+        - mountPath: "/etc/grid-security/storm-webdav/"
+          name: host-certificate
+        - mountPath: "/etc/storm/webdav/config/application.yml"
+          name: application-yml
+          subPath: application.yml
+        - mountPath: "/etc/storm/webdav/sa.d/"
+          name: sa
+        env: 
+        {{- range $env_key, $env_val := $.Values.extraEnv }}
+          - name: {{ $env_val.name }}
+            value: {{ $env_val.value }}
+        {{- end }}
+      restartPolicy: Always
+      serviceAccountName: ""
+      volumes:
+        - name: storage-area
+          {{- if .Values.persistence.enabled }}
+          persistentVolumeClaim:
+            claimName: {{ .Values.persistence.existingClaim | default "storage-area" }}
+          {{- else }}
+          emptyDir: {}
+          {{- end }}
+        - name: host-certificate
+          secret:
+            secretName: host-certificate
+            items:
+            - key: tls.key
+              path: hostkey.pem
+            - key: tls.crt
+              path: hostcert.pem
+        - name: application-yml
+          configMap:
+            name: application.yml
+        - name: sa
+          configMap:
+            name: sa
+            items:
+             {{- range $sa_key, $sa_value := .Values.config.sa }}
+             - key: {{ $sa_key }}
+               path: {{ $sa_key }}.properties
+             {{- end }} 
+        
+status: {}

@@ -1,0 +1,8 @@
+# sensitive StoRM configuration files
+
+etc/storm-webdav/sa.d/
+etc/storm-webdav/config/application.yml
+
+# host-certificates
+
+etc/host-certificates
