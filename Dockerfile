@@ -1,8 +1,19 @@
 FROM rockylinux:9.3
 
+# install egi repo (grid trust anchors) and dependencies
+RUN curl -Lo /etc/yum.repos.d/EGI-trustanchors.repo https://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustanchors.repo
+RUN yum update -y && yum install -y vim git maven java-11-openjdk.x86_64 ca-policy-egi-core ca-certificates
+
+# create storm user
+RUN useradd -ms /bin/bash storm
+
+# clone and build the storm-webdav jar
+RUN git clone --quiet https://github.com/italiangrid/storm-webdav.git /opt/storm-webdav
+RUN cd /opt/storm-webdav && mvn -B clean package -s maven/cnaf-mirror-settings.xml
+
 # STorM environment settings
 # see https://github.com/italiangrid/storm-webdav/tree/master/etc/systemd/system/storm-webdav.service.d
-ENV LimitNOFILE=65535
+# must be done after build otherwise tests fail
 ENV STORM_WEBDAV_USER=storm
 ENV STORM_WEBDAV_JVM_OPTS="-Xms1024m -Xmx1024m -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=1044,suspend=n"
 ENV STORM_WEBDAV_SERVER_ADDRESS=0.0.0.0
@@ -31,19 +42,7 @@ ENV STORM_WEBDAV_TPC_VERIFY_CHECKSUM=false
 ENV STORM_WEBDAV_AUTHZ_SERVER_ENABLE=false
 ENV STORM_WEBDAV_REQUIRE_CLIENT_CERT=false
 
-# install egi repo (grid trust anchors) and dependencies
-RUN curl -Lo /etc/yum.repos.d/EGI-trustanchors.repo https://repository.egi.eu/sw/production/cas/1/current/repo-files/egi-trustanchors.repo
-RUN yum update -y && yum install -y vim git maven java-11-openjdk.x86_64 ca-policy-egi-core ca-certificates
-
-# create storm user
-RUN useradd -ms /bin/bash storm
-
-# clone and build the storm-webdav jar
-RUN git clone --quiet https://github.com/italiangrid/storm-webdav.git /opt/storm-webdav
-RUN cd /opt/storm-webdav && mvn -B clean package -s maven/cnaf-mirror-settings.xml
-
 # put built java binary in default location
-RUN ls 
 RUN mkdir -p /usr/share/java/storm-webdav/
 RUN mv /opt/storm-webdav/target/storm-webdav-server.jar /usr/share/java/storm-webdav/
 RUN chown storm:storm /usr/share/java/storm-webdav/storm-webdav-server.jar
@@ -52,7 +51,7 @@ RUN chown storm:storm /usr/share/java/storm-webdav/storm-webdav-server.jar
 RUN mkdir -p /etc/storm/webdav
 COPY --chown=storm:storm etc/storm-webdav/logback* /etc/storm/webdav/
 
-# add host certificates
+# create directory for host certificate
 RUN mkdir -p /etc/grid-security/storm-webdav/
 
 # create logging directories
