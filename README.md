@@ -15,17 +15,9 @@ Fill out the following sections of the helm template at `etc/helm/values.templat
 - `ingress.host`: the hostname for ingress via the ingress-nginx controller,
 - `persistence`: attributes to enable persistence of the storage area.
 
-Persistence should nearly always be enabled to ensure storage element data is not lost.
-
-## Deploy
-
-Deployment is via Helm:
-
-```bash
-$ helm upgrade --install --create-namespace -n storm-webdav --values values.yaml ska-src-storm-webdav /path/to/ska-src-storm-webdav/etc/helm/
-```
-
 ### Persistence
+
+Persistence should nearly always be enabled to ensure storage element data is not lost.
 
 Persistence via dynamic volume provisioning is supported using a preconfigured storage class. This can be overriden 
 by populating the `persistence.existingClaim` with the persistent volume claim for the (data) volume to be mounted.  
@@ -33,3 +25,12 @@ by populating the `persistence.existingClaim` with the persistent volume claim f
 ### Ingress
 
 Ingress manifests for the `nginx-ingress` controller are provided.
+
+## Deploy
+
+Deployment is in the usual way via Helm:
+
+```bash
+$ helm upgrade --install --create-namespace -n storm-webdav --values values.yaml ska-src-storm-webdav /path/to/ska-src-storm-webdav/etc/helm/
+```
+
