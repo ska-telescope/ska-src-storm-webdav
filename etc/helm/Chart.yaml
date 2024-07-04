@@ -1,4 +1,4 @@
-name: storm-webdav
+name: ska-src-storm-webdav
 description: A chart for the deployment of StoRM webdav.
 version: 1.1.1
 apiVersion: v1
