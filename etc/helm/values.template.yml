@@ -99,6 +99,9 @@ config:
 
 ingress:
   host:
+  proxyBodySize: 5000m
+  proxyBuffering: "off"
+  proxyRequestBuffering: "off"
 
 persistence:
   storageClass: 
