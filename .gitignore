@@ -10,8 +10,13 @@ etc/storm-webdav/sa.d/*
 
 etc/storm-webdav/config/*
 !etc/storm-webdav/config
-!etc/storm-webdav/config/application.yml.template
+!etc/storm-webdav/config/application.yml
+!etc/storm-webdav/config/README.md
 
 # host-certificates
 
-etc/host-certificates
+etc/host-certificate
+
+# docker
+
+docker-compose.local.yml

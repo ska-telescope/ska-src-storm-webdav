@@ -1,0 +1,20 @@
+version: "3.5"
+services:
+  storm-webdav:
+    container_name: ska-src-storm-webdav
+    image: ska-src-storm-webdav:1.1.1
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      STORM_WEBDAV_HOSTNAME_0: localhost
+      STORM_WEBDAV_VOMS_TRUST_STORE_DIR: /etc/grid-security/certificates
+      STORM_WEBDAV_REQUIRE_CLIENT_CERT: "false"
+    ports:
+      - 8443:8443
+      - 8085:8085
+    volumes:
+      - ./etc/host-certificate/hostcert.pem:/etc/grid-security/storm-webdav/hostcert.pem:ro    # host certificate
+      - ./etc/host-certificate/hostkey.pem:/etc/grid-security/storm-webdav/hostkey.pem:ro      # host private key
+      - ./etc/storm-webdav/config/application.yml:/etc/storm/webdav/config/application.yml:ro  # application yml (https://github.com/italiangrid/storm-webdav/blob/master/etc/storm-webdav/config/application.yml)
+      - ./etc/storm-webdav/sa.d:/etc/storm/webdav/sa.d:ro                                      # storage area directory (https://github.com/italiangrid/storm-webdav/tree/master/etc/storm-webdav/sa.d)

@@ -26,11 +26,26 @@ by populating the `persistence.existingClaim` with the persistent volume claim f
 
 Ingress manifests for the `nginx-ingress` controller are provided.
 
-## Deploy
+## Deployment
 
-Deployment is in the usual way via Helm:
+### Docker
+
+For deployment using Docker, you will need to create (new) TLS keys in `etc/host-certificate` and configure the 
+application/storage areas under `etc/storm-webdav/config` and `etc/storm-webdav/sa.d` respectively.
+
+These files and directories must then be mounted at the expected locations. The example `docker-compose` file 
+illustrates the necessary volume mounts.
+
+Be sure to remove the `.template` suffix from any storage areas that you want to include.
+
+### Helm
+
+Helm charts exist for deployment on to kubernetes clusters. TLS keys and application/storage area configuration is 
+defined in the `values.yml`.
+
+#### Example
 
 ```bash
-$ helm upgrade --install --create-namespace -n storm-webdav --values values.yaml ska-src-storm-webdav /path/to/ska-src-storm-webdav/etc/helm/
+ska-src-storm-webdav$ helm upgrade --install --create-namespace -n storm-webdav --values values.yml ska-src-storm-webdav etc/helm/
 ```
 
