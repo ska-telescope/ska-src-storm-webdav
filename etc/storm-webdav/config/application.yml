@@ -24,8 +24,28 @@
 # orgs=https://iam-test.indigo-datacloud.eu
 #
 oauth:
+  enable-oidc: true
   issuers:
-    # Add here the list of trusted OAuth token issuers.
-    # Example:
-    # - name: iam-test
-    #   issuer: https://iam-test.indigo-datacloud.eu/
+    - name: escape
+      issuer: https://iam-escape.cloud.cnaf.infn.it/
+    - name: ska
+      issuer: https://ska-iam.stfc.ac.uk/
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          escape:
+            issuer-uri: https://iam-escape.cloud.cnaf.infn.it/
+          ska:
+            issuer-uri: https://ska-iam.stfc.ac.uk/
+        registration:
+          escape:
+            provider: escape
+            client-name:
+            client-id:
+            client-secret:
+            scope:
+              - openid
+              - profile
+              - wlcg.groups

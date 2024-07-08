@@ -1,20 +1,20 @@
-# This is an example of StoRM WebDAV storage area configuration
+#FIXME: Remove any .template suffix for this storage area to be included
 
 # Name of the storage area
 name=sa
 
 # Root path for the storage area. Files will be served from this path, which must exist and
 # must be accessible from the user that runs the storm webdav service
-rootPath=/tmp
+rootPath=
 
 # Comma separated list of storage area access points.
-accessPoints=/sa
+accessPoints=
 
 # Comma-separated list of VOMS VOs supported in this storage area
-vos=test.vo
+# vos=test.vo
 
 # Comma-separated list of OAuth/OpenID Connect token issuers trusted in this storage area
-# orgs=https://super-provider.example/
+orgs=https://iam-escape.cloud.cnaf.infn.it/,https://ska-iam.stfc.ac.uk/
 
 # Enables read access to users authenticated with an X.509 certificate issued by
 # a trusted CA (users without VOMS credentials).
@@ -22,23 +22,23 @@ vos=test.vo
 # authenticatedReadEnabled=false
 
 # Enables read access to anonymous users. Defaults to false.
-# anonymousReadEnabled=false
+anonymousReadEnabled=false
 
 # Enables VO map files for this storage area. Defaults to true.
-# voMapEnabled=true
+voMapEnabled=false
 
 # VO map normally grants read-only access to storage area files. To grant
 # write access set this flag to true. Defaults to false.
 # voMapGrantsWriteAccess=false
 
 # Enables read access to storage area files to users authenticated using OAuth/OIDC. Defaults to true.
-# orgsGrantReadPermission=true
+orgsGrantReadPermission=true
 
 # Enables write access to storage area files to users authenticated using OAuth/OIDC. Defaults to false.
-# orgsGrantWritePermission=false
+orgsGrantWritePermission=true
 
 # Enables scope-based authorization following the rules imposed by the WLCG JWT profile. Defaults to false.
-# wlcgScopeAuthzEnabled=false
+#wlcgScopeAuthzEnabled=true
 
 # Enables fine-grained authorization engine. Defaults to false.
-# fineGrainedAuthzEnabled=false
+#fineGrainedAuthzEnabled=true
